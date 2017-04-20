@@ -11,5 +11,12 @@
 
     <artifactId>nbpDirs</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>pl.witek.nbp</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
