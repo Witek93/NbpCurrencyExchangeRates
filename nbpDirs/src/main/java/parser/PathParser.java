@@ -10,9 +10,14 @@ public class PathParser {
 
     private String directoryPath;
 
-    public PathParser(String directoryPath) {
-        pathValidator.validate(directoryPath);
-        this.directoryPath = directoryPath;
+    public PathParser(String path) {
+        String cleanPath = cleanedUp(path);
+        pathValidator.validate(cleanPath);
+        this.directoryPath = cleanPath;
+    }
+
+    private String cleanedUp(String path) {
+        return path.replaceAll("\\P{Print}", "");
     }
 
 
