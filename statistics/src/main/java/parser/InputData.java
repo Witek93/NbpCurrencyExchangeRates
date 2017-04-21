@@ -1,6 +1,5 @@
 package parser;
 
-import com.sun.istack.internal.NotNull;
 import model.Currency;
 
 import java.time.LocalDate;
@@ -10,7 +9,7 @@ public class InputData {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public InputData(@NotNull Currency currency, @NotNull LocalDate startDate, @NotNull LocalDate endDate) {
+    public InputData(Currency currency, LocalDate startDate, LocalDate endDate) {
         this.currency = currency;
         this.startDate = startDate;
         this.endDate = endDate;
