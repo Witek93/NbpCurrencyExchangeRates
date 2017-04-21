@@ -11,39 +11,38 @@ import java.util.Optional;
 public class InputDataParser {
     private static final int CURRENCY_CODE_LENGTH = 3;
 
-    private String[] inputData;
-
-    private Currency currency;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String[] rawInputData;
+    private InputData inputData;
 
     public Currency getCurrency() {
-        return currency;
+        return inputData.getCurrency();
     }
 
     public LocalDate getStartDate() {
-        return startDate;
+        return inputData.getStartDate();
     }
 
     public LocalDate getEndDate() {
-        return endDate;
+        return inputData.getEndDate();
     }
 
-    public InputDataParser(String... inputData) {
-        if (inputData == null || inputData.length != 3) {
+    public InputDataParser(String... rawInputData) {
+        if (rawInputData == null || rawInputData.length != 3) {
             throw new IllegalArgumentException("Parser accepts only exactly 3 arguments.");
         }
-        this.inputData = inputData;
+        this.rawInputData = rawInputData;
     }
 
     public void parse() {
-        currency = parseCurrency();
-        startDate = parseStartDate();
-        endDate = parseEndDate();
+        Currency currency = parseCurrency();
+        LocalDate startDate = parseStartDate();
+        LocalDate endDate = parseEndDate();
+
+        inputData = new InputData(currency, startDate, endDate);
     }
 
     private Currency parseCurrency() {
-        return Optional.ofNullable(inputData[0])
+        return Optional.ofNullable(rawInputData[0])
                 .filter(currencyCode -> currencyCode.length() >= CURRENCY_CODE_LENGTH)
                 .filter(currencyCode -> currencyCode.matches("[A-Za-z]*"))
                 .map(Currency::new)
@@ -52,7 +51,7 @@ public class InputDataParser {
 
     private LocalDate parseStartDate() {
         try {
-            return parseDate(inputData[1]);
+            return parseDate(rawInputData[1]);
         } catch (DateTimeParseException e) {
             throw new InvalidDataException("Parser failed to parse start date");
         }
@@ -60,7 +59,7 @@ public class InputDataParser {
 
     private LocalDate parseEndDate() {
         try {
-            return parseDate(inputData[2]);
+            return parseDate(rawInputData[2]);
         } catch (DateTimeParseException e) {
             throw new InvalidDataException("Parser failed to parse start date");
         }
