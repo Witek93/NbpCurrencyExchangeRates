@@ -2,13 +2,14 @@ package parser;
 
 import exceptions.InvalidDataException;
 import model.Currency;
+import processors.Parser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
-public class InputDataParser {
+public class InputDataParser implements Parser<InputData> {
     private static final int CURRENCY_CODE_LENGTH = 3;
 
     private String[] rawInputData;

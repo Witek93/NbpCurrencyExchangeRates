@@ -2,6 +2,7 @@ import model.QueryRatesRequest;
 import model.request.DateRange;
 import parser.InputData;
 import parser.InputDataParser;
+import processors.Parser;
 import services.NbpDirectoryService;
 import services.NbpDirectoryServiceAdapter;
 
@@ -12,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         args = new String[]{"EUR", "2013-01-28", "2015-01-31"};
 
-        InputDataParser parser = new InputDataParser(args);
+        Parser<InputData> parser = new InputDataParser(args);
         InputData inputData = parser.parse();
 
         QueryRatesRequest queryRatesRequest = new QueryRatesRequest()
