@@ -54,11 +54,11 @@ public class InputDataParserTest {
         InputDataParser parser = new InputDataParser(RAW_VALID_CURRENCY, RAW_VALID_START_DATE, RAW_VALID_END_DATE);
 
         // when
-        parser.parse();
+        InputData inputData = parser.parse();
 
         // then
-        assertThat(parser.getCurrency()).isEqualTo(VALID_CURRENCY);
-        assertThat(parser.getStartDate()).isEqualTo(VALID_START_DATE);
-        assertThat(parser.getEndDate()).isEqualTo(VALID_END_DATE);
+        assertThat(inputData.getCurrency()).isEqualTo(VALID_CURRENCY);
+        assertThat(inputData.getStartDate()).isEqualTo(VALID_START_DATE);
+        assertThat(inputData.getEndDate()).isEqualTo(VALID_END_DATE);
     }
 }

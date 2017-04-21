@@ -1,5 +1,6 @@
 import model.QueryRatesRequest;
 import model.request.DateRange;
+import parser.InputData;
 import parser.InputDataParser;
 import services.NbpDirectoryService;
 import services.NbpDirectoryServiceAdapter;
@@ -12,11 +13,11 @@ public class Main {
         args = new String[]{"EUR", "2013-01-28", "2015-01-31"};
 
         InputDataParser parser = new InputDataParser(args);
-        parser.parse();
+        InputData inputData = parser.parse();
 
         QueryRatesRequest queryRatesRequest = new QueryRatesRequest()
-                .setCurrency(parser.getCurrency())
-                .setDateRange(new DateRange(parser.getStartDate(), parser.getEndDate()));
+                .setCurrency(inputData.getCurrency())
+                .setDateRange(new DateRange(inputData.getStartDate(), inputData.getEndDate()));
 
         Collection<Year> years = queryRatesRequest.getDateRange().getYears();
 

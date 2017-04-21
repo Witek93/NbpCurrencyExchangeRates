@@ -12,19 +12,7 @@ public class InputDataParser {
     private static final int CURRENCY_CODE_LENGTH = 3;
 
     private String[] rawInputData;
-    private InputData inputData;
-
-    public Currency getCurrency() {
-        return inputData.getCurrency();
-    }
-
-    public LocalDate getStartDate() {
-        return inputData.getStartDate();
-    }
-
-    public LocalDate getEndDate() {
-        return inputData.getEndDate();
-    }
+    private InputData parsedData;
 
     public InputDataParser(String... rawInputData) {
         if (rawInputData == null || rawInputData.length != 3) {
@@ -33,12 +21,15 @@ public class InputDataParser {
         this.rawInputData = rawInputData;
     }
 
-    public void parse() {
-        Currency currency = parseCurrency();
-        LocalDate startDate = parseStartDate();
-        LocalDate endDate = parseEndDate();
+    public InputData parse() {
+        if (parsedData == null) {
+            Currency currency = parseCurrency();
+            LocalDate startDate = parseStartDate();
+            LocalDate endDate = parseEndDate();
+            parsedData = new InputData(currency, startDate, endDate);
+        }
 
-        inputData = new InputData(currency, startDate, endDate);
+        return parsedData;
     }
 
     private Currency parseCurrency() {
