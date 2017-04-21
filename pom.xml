@@ -23,6 +23,7 @@
         <module>rates</module>
         <module>statistics</module>
         <module>common</module>
+        <module>main</module>
     </modules>
     <dependencies>
         <dependency>
