@@ -3,7 +3,7 @@ package services;
 import model.NbpDirectory;
 import model.NbpDirectoryAdaptedResponse;
 import model.NbpDirectoryResponse;
-import model.NbpDirectoryResponse.NbpDirectoryPathParser;
+import parser.PathParser;
 
 import java.time.Year;
 
@@ -21,7 +21,7 @@ public class NbpDirectoryServiceAdapter {
 
         nbpDirectoryResponse.getPaths()
                 .stream()
-                .map(NbpDirectoryPathParser::new)
+                .map(PathParser::new)
                 .map(parser -> new NbpDirectory()
                         .setId(parser.getId())
                         .setType(parser.getType())
