@@ -1,14 +1,16 @@
 package parser;
 
 import model.ExchangeType;
+import processors.Parser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class PathParser {
+public class PathParser implements Parser<DirectoryData> {
     private static final PathValidator pathValidator = new PathValidator();
 
     private String directoryPath;
+    private DirectoryData directoryData;
 
     public PathParser(String path) {
         String cleanPath = cleanedUp(path);
@@ -20,20 +22,27 @@ public class PathParser {
         return path.replaceAll("\\P{Print}", "");
     }
 
+    @Override
+    public DirectoryData parse() {
+        if (directoryData == null) {
+            String id = parseId();
+            ExchangeType type = parseType();
+            LocalDate date = parseDate();
+            directoryData = new DirectoryData(id, type, date, directoryPath);
+        }
 
-    public String getDirectoryPath() {
-        return directoryPath;
+        return directoryData;
     }
 
-    public String getId() {
+    private String parseId() {
         return directoryPath.substring(1, 4);
     }
 
-    public ExchangeType getType() {
+    private ExchangeType parseType() {
         return ExchangeType.valueOf(directoryPath.substring(0, 1).toUpperCase());
     }
 
-    public LocalDate getDate() {
+    private LocalDate parseDate() {
         return LocalDate.parse(directoryPath.substring(5), DateTimeFormatter.ofPattern("yyMMdd"));
     }
 }

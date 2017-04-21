@@ -3,6 +3,7 @@ package services;
 import model.NbpDirectory;
 import model.NbpDirectoryAdaptedResponse;
 import model.NbpDirectoryResponse;
+import parser.DirectoryData;
 import parser.PathParser;
 
 import java.time.Year;
@@ -30,12 +31,13 @@ public class NbpDirectoryServiceAdapter {
     private NbpDirectory createNbpDirectory(String path) {
         PathParser parser = new PathParser(path);
 
-        return new NbpDirectory()
-                .setId(parser.getId())
-                .setType(parser.getType())
-                .setDate(parser.getDate())
-                .setFileName(parser.getDirectoryPath());
-    }
+        DirectoryData directoryData = parser.parse();
 
+        return new NbpDirectory()
+                .setId(directoryData.getId())
+                .setType(directoryData.getType())
+                .setDate(directoryData.getDate())
+                .setFileName(directoryData.getDirectoryPath());
+    }
 
 }
