@@ -21,15 +21,20 @@ public class NbpDirectoryServiceAdapter {
 
         nbpDirectoryResponse.getPaths()
                 .stream()
-                .map(PathParser::new)
-                .map(parser -> new NbpDirectory()
-                        .setId(parser.getId())
-                        .setType(parser.getType())
-                        .setDate(parser.getDate())
-                        .setFileName(parser.getDirectoryPath()))
+                .map(this::createNbpDirectory)
                 .forEach(response::addDirectory);
 
         return response;
+    }
+
+    private NbpDirectory createNbpDirectory(String path) {
+        PathParser parser = new PathParser(path);
+
+        return new NbpDirectory()
+                .setId(parser.getId())
+                .setType(parser.getType())
+                .setDate(parser.getDate())
+                .setFileName(parser.getDirectoryPath());
     }
 
 

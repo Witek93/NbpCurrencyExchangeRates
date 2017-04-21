@@ -13,6 +13,10 @@ public class InputDataParser {
 
     private String[] inputData;
 
+    private Currency currency;
+    private LocalDate startDate;
+    private LocalDate endDate;
+
     public Currency getCurrency() {
         return currency;
     }
@@ -24,10 +28,6 @@ public class InputDataParser {
     public LocalDate getEndDate() {
         return endDate;
     }
-
-    private Currency currency;
-    private LocalDate startDate;
-    private LocalDate endDate;
 
     public InputDataParser(String... inputData) {
         if (inputData == null || inputData.length != 3) {
