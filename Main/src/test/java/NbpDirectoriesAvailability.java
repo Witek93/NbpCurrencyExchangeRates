@@ -2,8 +2,8 @@ import model.GetDirectoriesRS;
 import model.GetNbpDirectoriesRS;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import services.GetNbpDirectoriesService;
 import services.GetDirectoriesService;
+import services.GetNbpDirectoriesService;
 import tests.categories.Slow;
 
 import java.time.Year;
@@ -29,8 +29,7 @@ public class NbpDirectoriesAvailability {
     @Test
     public void shouldConnectTo_externalNbpDirectory_throughAdapter() throws Exception
     {
-        GetNbpDirectoriesService getNbpDirectoriesService = new GetNbpDirectoriesService();
-        GetDirectoriesService getDirectoriesService = new GetDirectoriesService(getNbpDirectoriesService);
+        GetDirectoriesService getDirectoriesService = new GetDirectoriesService();
 
         GetDirectoriesRS response = getDirectoriesService.call(PREVIOUS_YEAR);
 

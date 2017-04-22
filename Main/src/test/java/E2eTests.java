@@ -6,7 +6,6 @@ import parser.InputData;
 import parser.InputDataParser;
 import processors.Parser;
 import services.GetDirectoriesService;
-import services.GetNbpDirectoriesService;
 import tests.categories.Slow;
 
 import java.time.Year;
@@ -26,8 +25,7 @@ public class E2eTests {
 
         Collection<Year> years = ratesRQ.getDateRange().getYears();
 
-        GetNbpDirectoriesService getNbpDirectoriesService = new GetNbpDirectoriesService();
-        GetDirectoriesService getDirectoriesService = new GetDirectoriesService(getNbpDirectoriesService);
+        GetDirectoriesService getDirectoriesService = new GetDirectoriesService();
 
         years.stream()
                 .map(getDirectoriesService::call)

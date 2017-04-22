@@ -14,11 +14,7 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 public class GetDirectoriesService {
-    private GetNbpDirectoriesService getNbpDirectoriesService;
-
-    public GetDirectoriesService(GetNbpDirectoriesService getNbpDirectoriesService) {
-        this.getNbpDirectoriesService = getNbpDirectoriesService;
-    }
+    private GetNbpDirectoriesService getNbpDirectoriesService = new GetNbpDirectoriesService();
 
     public GetDirectoriesRS call(Year ... years) {
         return call(asList(years));
@@ -37,6 +33,11 @@ public class GetDirectoriesService {
         response.addDirectories(nbpDirectories);
 
         return response;
+    }
+
+    public GetDirectoriesService withGetNbpDirectoriesService(GetNbpDirectoriesService getNbpDirectoriesService) {
+        this.getNbpDirectoriesService = getNbpDirectoriesService;
+        return this;
     }
 
     private Directory createNbpDirectory(String path) {
