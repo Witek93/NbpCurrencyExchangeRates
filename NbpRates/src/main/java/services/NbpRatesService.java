@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -20,7 +21,10 @@ import static model.Result.SUCCESS;
 
 public class NbpRatesService {
 
+    private static Logger logger = Logger.getLogger(NbpRatesService.class.getName());
+
     public NbpRatesRS call(String path) {
+        logger.info(path);
         try {
             return createUrl(path)
                     .map(this::readXml)
@@ -28,6 +32,7 @@ public class NbpRatesService {
                     .map(response -> response.setResult(SUCCESS))
                     .orElse(new NbpRatesRS().setResult(FAILURE));
         } catch (Exception e) {
+            e.printStackTrace();
             return new NbpRatesRS().setResult(FAILURE);
         }
     }
@@ -61,6 +66,7 @@ public class NbpRatesService {
         try {
             return of(new URL(url));
         } catch (MalformedURLException e) {
+            e.printStackTrace();
             return empty();
         }
     }

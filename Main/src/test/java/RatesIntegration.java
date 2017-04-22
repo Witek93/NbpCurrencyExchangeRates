@@ -16,13 +16,13 @@ public class RatesIntegration {
     public void performCall_withSuccess() throws Exception {
         RatesService ratesService = new RatesService();
         RatesRQ ratesRQ = new RatesRQ()
-                .setCurrency(new Currency("PLN"))
+                .setCurrency(new Currency("USD"))
                 .setDateRange(PREVIOUS_MONTH);
 
         RatesRS ratesRS = ratesService.call(ratesRQ);
 
         assertThat(ratesRS).isNotNull();
         assertThat(ratesRS.getResult()).isEqualTo(SUCCESS);
-        assertThat(ratesRS.getExchanges()).isNotEmpty();
+        assertThat(ratesRS.getExchange().getExchangeRates()).isNotEmpty();
     }
 }

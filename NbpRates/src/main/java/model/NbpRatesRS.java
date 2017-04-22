@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -9,6 +10,7 @@ import deserializers.LocalDateDeserializer;
 import java.time.LocalDate;
 import java.util.Collection;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(localName = "tabela_kursow")
 public class NbpRatesRS {
 

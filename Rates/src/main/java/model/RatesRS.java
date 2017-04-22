@@ -1,22 +1,15 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 public class RatesRS {
-    private Collection<Exchange> exchanges;
+    private Exchange exchange;
     private Result result;
 
-    public Collection<Exchange> getExchanges() {
-        if (exchanges == null)
-        {
-            exchanges = new ArrayList<>();
-        }
-        return exchanges;
+    public Exchange getExchange() {
+        return exchange;
     }
 
-    public RatesRS setExchanges(Collection<Exchange> exchanges) {
-        this.exchanges = exchanges;
+    public RatesRS setExchange(Exchange exchange) {
+        this.exchange = exchange;
         return this;
     }
 

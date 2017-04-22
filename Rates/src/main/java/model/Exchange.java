@@ -1,7 +1,5 @@
 package model;
 
-import model.Currency;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -26,9 +24,11 @@ public class Exchange {
         return exchangeRates;
     }
 
-    public Exchange setExchangeRates(Collection<ExchangeRate> exchangeRates) {
-        this.exchangeRates = exchangeRates;
-        return this;
+    public void addExchangeRate(ExchangeRate exchangeRate) {
+        getExchangeRates().add(exchangeRate);
     }
 
+    public void addExchangeRate(Collection<ExchangeRate> exchangeRates) {
+        getExchangeRates().addAll(exchangeRates);
+    }
 }
