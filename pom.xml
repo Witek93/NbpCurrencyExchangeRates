@@ -41,7 +41,7 @@
     </dependencies>
 
     <groupId>pl.witek.nbp</groupId>
-    <artifactId>NbpRates</artifactId>
+    <artifactId>ExchangeRates</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 
