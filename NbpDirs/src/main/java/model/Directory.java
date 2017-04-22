@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
-public class NbpDirectory {
+public class Directory {
     private ExchangeType type;
     private String id;
     private LocalDate date;
@@ -12,7 +12,7 @@ public class NbpDirectory {
         return type;
     }
 
-    public NbpDirectory setType(ExchangeType type) {
+    public Directory setType(ExchangeType type) {
         this.type = type;
         return this;
     }
@@ -21,7 +21,7 @@ public class NbpDirectory {
         return id;
     }
 
-    public NbpDirectory setId(String id) {
+    public Directory setId(String id) {
         this.id = id;
         return this;
     }
@@ -30,7 +30,7 @@ public class NbpDirectory {
         return date;
     }
 
-    public NbpDirectory setDate(LocalDate date) {
+    public Directory setDate(LocalDate date) {
         this.date = date;
         return this;
     }
@@ -39,14 +39,14 @@ public class NbpDirectory {
         return fileName;
     }
 
-    public NbpDirectory setFileName(String fileName) {
+    public Directory setFileName(String fileName) {
         this.fileName = fileName;
         return this;
     }
 
     @Override
     public String toString() {
-        return "NbpDirectory{" +
+        return "Directory{" +
                 "type=" + type +
                 ", id='" + id + '\'' +
                 ", date=" + date +

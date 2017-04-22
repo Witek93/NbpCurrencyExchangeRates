@@ -1,6 +1,6 @@
 package services;
 
-import model.NbpDirectoryResponse;
+import model.GetNbpDirectoriesRS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,14 +17,14 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
-public class NbpDirectoryService {
+public class GetNbpDirectoriesService {
 
-    public NbpDirectoryResponse call(Year year) {
+    public GetNbpDirectoriesRS call(Year year) {
 
-        NbpDirectoryResponse response = new NbpDirectoryResponse();
+        GetNbpDirectoriesRS response = new GetNbpDirectoriesRS();
 
         createUrl(year)
-                .map(NbpDirectoryService::readData)
+                .map(GetNbpDirectoriesService::readData)
                 .ifPresent(response::setPaths);
 
         return response;

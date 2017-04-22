@@ -5,8 +5,8 @@ import org.junit.experimental.categories.Category;
 import parser.InputData;
 import parser.InputDataParser;
 import processors.Parser;
-import services.NbpDirectoryService;
-import services.NbpDirectoryServiceAdapter;
+import services.GetNbpDirectoriesService;
+import services.GetDirectoriesService;
 import tests.categories.Slow;
 
 import java.time.Year;
@@ -26,11 +26,11 @@ public class E2eTests {
 
         Collection<Year> years = queryRatesRequest.getDateRange().getYears();
 
-        NbpDirectoryService directoryService = new NbpDirectoryService();
-        NbpDirectoryServiceAdapter nbpDirectoryServiceAdapter = new NbpDirectoryServiceAdapter(directoryService);
+        GetNbpDirectoriesService getNbpDirectoriesService = new GetNbpDirectoriesService();
+        GetDirectoriesService getDirectoriesService = new GetDirectoriesService(getNbpDirectoriesService);
 
         years.stream()
-                .map(nbpDirectoryServiceAdapter::call)
+                .map(getDirectoriesService::call)
                 .flatMap(e -> e.getDirectories().stream())
                 .forEach(e -> System.out.println(e));
 

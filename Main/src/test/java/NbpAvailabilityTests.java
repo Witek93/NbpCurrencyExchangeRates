@@ -1,9 +1,9 @@
-import model.NbpDirectoryAdaptedResponse;
-import model.NbpDirectoryResponse;
+import model.GetDirectoriesRS;
+import model.GetNbpDirectoriesRS;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import services.NbpDirectoryService;
-import services.NbpDirectoryServiceAdapter;
+import services.GetNbpDirectoriesService;
+import services.GetDirectoriesService;
 import tests.categories.Slow;
 
 import java.time.Year;
@@ -18,21 +18,21 @@ public class NbpAvailabilityTests {
     @Test
     public void shouldConnectTo_externalNbpDirectory() throws Exception
     {
-        NbpDirectoryService directoryService = new NbpDirectoryService();
+        GetNbpDirectoriesService directoryService = new GetNbpDirectoriesService();
 
-        NbpDirectoryResponse nbpDirectoryResponse = directoryService.call(PREVIOUS_YEAR);
+        GetNbpDirectoriesRS getNbpDirectoriesRS = directoryService.call(PREVIOUS_YEAR);
 
-        assertThat(nbpDirectoryResponse.getPaths()).isNotEmpty();
+        assertThat(getNbpDirectoriesRS.getPaths()).isNotEmpty();
     }
 
     @Category(Slow.class)
     @Test
     public void shouldConnectTo_externalNbpDirectory_throughAdapter() throws Exception
     {
-        NbpDirectoryService directoryService = new NbpDirectoryService();
-        NbpDirectoryServiceAdapter adapter = new NbpDirectoryServiceAdapter(directoryService);
+        GetNbpDirectoriesService getNbpDirectoriesService = new GetNbpDirectoriesService();
+        GetDirectoriesService getDirectoriesService = new GetDirectoriesService(getNbpDirectoriesService);
 
-        NbpDirectoryAdaptedResponse response = adapter.call(PREVIOUS_YEAR);
+        GetDirectoriesRS response = getDirectoriesService.call(PREVIOUS_YEAR);
 
         assertThat(response.getDirectories()).isNotEmpty();
     }

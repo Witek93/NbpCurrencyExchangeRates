@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class NbpDirectoryResponse {
+public class GetNbpDirectoriesRS {
     private Collection<String> paths;
 
     public Collection<String> getPaths() {
@@ -14,14 +14,14 @@ public class NbpDirectoryResponse {
         return paths;
     }
 
-    public NbpDirectoryResponse setPaths(Collection<String> paths) {
+    public GetNbpDirectoriesRS setPaths(Collection<String> paths) {
         this.paths = paths;
         return this;
     }
 
     @Override
     public String toString() {
-        return "NbpDirectoryResponse{" +
+        return "GetNbpDirectoriesRS{" +
                 "paths=" + paths +
                 '}';
     }
