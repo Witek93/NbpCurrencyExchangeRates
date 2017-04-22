@@ -10,7 +10,7 @@ import java.time.Year;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NbpAvailabilityTests {
+public class NbpDirectoriesAvailability {
 
     private static final Year PREVIOUS_YEAR = Year.now().minusYears(1);
 
