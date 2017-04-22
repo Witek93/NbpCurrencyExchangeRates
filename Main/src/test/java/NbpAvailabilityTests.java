@@ -1,40 +1,39 @@
-import model.QueryRatesRequest;
-import model.request.DateRange;
+import model.NbpDirectoryAdaptedResponse;
+import model.NbpDirectoryResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import parser.InputData;
-import parser.InputDataParser;
-import processors.Parser;
 import services.NbpDirectoryService;
 import services.NbpDirectoryServiceAdapter;
 import tests.categories.Slow;
 
 import java.time.Year;
-import java.util.Collection;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NbpAvailabilityTests {
 
+    private static final Year PREVIOUS_YEAR = Year.now().minusYears(1);
+
     @Category(Slow.class)
     @Test
-    public void foo() {
-        String[] args = {"EUR", "2013-01-28", "2015-01-31"};
-        Parser<InputData> parser = new InputDataParser(args);
-        InputData inputData = parser.parse();
-
-        QueryRatesRequest queryRatesRequest = new QueryRatesRequest()
-                .setCurrency(inputData.getCurrency())
-                .setDateRange(new DateRange(inputData.getStartDate(), inputData.getEndDate()));
-
-        Collection<Year> years = queryRatesRequest.getDateRange().getYears();
-
+    public void shouldConnectTo_externalNbpDirectory() throws Exception
+    {
         NbpDirectoryService directoryService = new NbpDirectoryService();
-        NbpDirectoryServiceAdapter nbpDirectoryServiceAdapter = new NbpDirectoryServiceAdapter(directoryService);
 
-        years.stream()
-                .map(nbpDirectoryServiceAdapter::call)
-                .flatMap(e -> e.getDirectories().stream())
-                .forEach(e -> System.out.println(e));
+        NbpDirectoryResponse nbpDirectoryResponse = directoryService.call(PREVIOUS_YEAR);
 
+        assertThat(nbpDirectoryResponse.getPaths()).isNotEmpty();
     }
 
+    @Category(Slow.class)
+    @Test
+    public void shouldConnectTo_externalNbpDirectory_throughAdapter() throws Exception
+    {
+        NbpDirectoryService directoryService = new NbpDirectoryService();
+        NbpDirectoryServiceAdapter adapter = new NbpDirectoryServiceAdapter(directoryService);
+
+        NbpDirectoryAdaptedResponse response = adapter.call(PREVIOUS_YEAR);
+
+        assertThat(response.getDirectories()).isNotEmpty();
+    }
 }
