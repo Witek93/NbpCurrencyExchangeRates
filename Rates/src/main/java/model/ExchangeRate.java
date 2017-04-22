@@ -1,4 +1,4 @@
-package model.response;
+package model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

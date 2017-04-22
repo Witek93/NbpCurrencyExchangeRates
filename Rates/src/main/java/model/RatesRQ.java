@@ -1,20 +1,17 @@
 package model;
 
-import model.Currency;
-import model.request.DateRange;
-
-public class QueryRatesRequest {
+public class RatesRQ {
     private Currency currency;
     private DateRange dateRange;
 
-    public QueryRatesRequest() {
+    public RatesRQ() {
     }
 
     public Currency getCurrency() {
         return currency;
     }
 
-    public QueryRatesRequest setCurrency(Currency currency) {
+    public RatesRQ setCurrency(Currency currency) {
         this.currency = currency;
         return this;
     }
@@ -23,7 +20,7 @@ public class QueryRatesRequest {
         return dateRange;
     }
 
-    public QueryRatesRequest setDateRange(DateRange dateRange) {
+    public RatesRQ setDateRange(DateRange dateRange) {
         this.dateRange = dateRange;
         return this;
     }

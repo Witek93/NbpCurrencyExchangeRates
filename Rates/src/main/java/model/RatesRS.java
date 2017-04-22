@@ -1,11 +1,9 @@
 package model;
 
-import model.response.Exchange;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class QueryRatesResponse {
+public class RatesRS {
     private Collection<Exchange> exchanges;
 
     public Collection<Exchange> getExchanges() {
@@ -16,7 +14,7 @@ public class QueryRatesResponse {
         return exchanges;
     }
 
-    public QueryRatesResponse setExchanges(Collection<Exchange> exchanges) {
+    public RatesRS setExchanges(Collection<Exchange> exchanges) {
         this.exchanges = exchanges;
         return this;
     }

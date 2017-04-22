@@ -1,4 +1,4 @@
-package model.response;
+package model;
 
 import model.Currency;
 

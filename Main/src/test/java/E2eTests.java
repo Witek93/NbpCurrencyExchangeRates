@@ -1,12 +1,12 @@
-import model.QueryRatesRequest;
-import model.request.DateRange;
+import model.DateRange;
+import model.RatesRQ;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import parser.InputData;
 import parser.InputDataParser;
 import processors.Parser;
-import services.GetNbpDirectoriesService;
 import services.GetDirectoriesService;
+import services.GetNbpDirectoriesService;
 import tests.categories.Slow;
 
 import java.time.Year;
@@ -20,11 +20,11 @@ public class E2eTests {
         Parser<InputData> parser = new InputDataParser(args);
         InputData inputData = parser.parse();
 
-        QueryRatesRequest queryRatesRequest = new QueryRatesRequest()
+        RatesRQ ratesRQ = new RatesRQ()
                 .setCurrency(inputData.getCurrency())
                 .setDateRange(new DateRange(inputData.getStartDate(), inputData.getEndDate()));
 
-        Collection<Year> years = queryRatesRequest.getDateRange().getYears();
+        Collection<Year> years = ratesRQ.getDateRange().getYears();
 
         GetNbpDirectoriesService getNbpDirectoriesService = new GetNbpDirectoriesService();
         GetDirectoriesService getDirectoriesService = new GetDirectoriesService(getNbpDirectoriesService);
