@@ -1,7 +1,6 @@
-package model;
+package deserializers;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
@@ -12,7 +11,7 @@ import java.util.Locale;
 
 public class NbpDoubleDeserializer extends JsonDeserializer<Double> {
     @Override
-    public Double deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public Double deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
         try {
             Number number = format.parse(jsonParser.getText());

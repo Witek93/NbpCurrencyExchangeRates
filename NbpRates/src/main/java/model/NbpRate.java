@@ -3,6 +3,7 @@ package model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import deserializers.NbpDoubleDeserializer;
 
 public class NbpRate {
     @JacksonXmlProperty(localName = "nazwa_waluty")
