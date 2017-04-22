@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -20,21 +21,19 @@ public class NbpRatesService {
     public NbpRatesRS call(String path) {
         return createUrl(path)
                 .map(this::readXml)
-                .map(this::deserialize)
-                .map(e -> {
-                    System.out.println(e);
-                    return e;
-                })
+                .map(deserializeTo(NbpRatesRS.class))
                 .orElse(new NbpRatesRS());
     }
 
-    private NbpRatesRS deserialize(String rawXml) {
-        XmlMapper mapper = new XmlMapper();
-        try {
-            return mapper.readValue(rawXml, NbpRatesRS.class);
-        } catch (IOException e) {
-            throw new RuntimeException("NbpRatesService was unable to deserialize response", e);
-        }
+    private <T> Function<String, T> deserializeTo(Class<T> valueType) {
+        return rawXml -> {
+            XmlMapper mapper = new XmlMapper();
+            try {
+                return mapper.readValue(rawXml, valueType);
+            } catch (IOException e) {
+                throw new RuntimeException("Cannot deserialize to: " + valueType.getName(), e);
+            }
+        };
     }
 
     private String readXml(URL url) {
@@ -45,7 +44,7 @@ public class NbpRatesService {
                     .lines()
                     .collect(joining());
         } catch (IOException e) {
-            return null;
+            throw new RuntimeException(e);
         }
 
     }
@@ -58,6 +57,4 @@ public class NbpRatesService {
             return empty();
         }
     }
-
-
 }
