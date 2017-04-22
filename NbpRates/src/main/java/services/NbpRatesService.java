@@ -1,5 +1,6 @@
 package services;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import model.NbpRatesRS;
 
 import java.io.BufferedReader;
@@ -10,7 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.joining;
@@ -18,13 +18,23 @@ import static java.util.stream.Collectors.joining;
 public class NbpRatesService {
 
     public NbpRatesRS call(String path) {
-        NbpRatesRS response = new NbpRatesRS();
-
-        createUrl(path)
+        return createUrl(path)
                 .map(this::readXml)
-                .ifPresent(System.out::println);
+                .map(this::deserialize)
+                .map(e -> {
+                    System.out.println(e);
+                    return e;
+                })
+                .orElse(new NbpRatesRS());
+    }
 
-        return response;
+    private NbpRatesRS deserialize(String rawXml) {
+        XmlMapper mapper = new XmlMapper();
+        try {
+            return mapper.readValue(rawXml, NbpRatesRS.class);
+        } catch (IOException e) {
+            throw new RuntimeException("NbpRatesService was unable to deserialize response", e);
+        }
     }
 
     private String readXml(URL url) {
