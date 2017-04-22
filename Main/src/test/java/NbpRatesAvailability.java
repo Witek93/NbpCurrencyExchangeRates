@@ -2,6 +2,8 @@ import model.NbpRatesRS;
 import org.junit.Test;
 import services.NbpRatesService;
 
+import static model.Result.FAILURE;
+import static model.Result.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NbpRatesAvailability {
@@ -15,8 +17,20 @@ public class NbpRatesAvailability {
 
         NbpRatesRS nbpRatesRS = nbpRatesService.call(validPath);
 
+        assertThat(nbpRatesRS.getResult()).isEqualTo(SUCCESS);
         assertThat(nbpRatesRS.getRates())
                 .overridingErrorMessage(NBP_RATES_RETURNED_NOTHING)
                 .isNotEmpty();
+    }
+
+    @Test
+    public void shouldReturnErrorMessage_forNonExistingPath() throws Exception {
+        NbpRatesService nbpRatesService = new NbpRatesService();
+        String invalidPath = "c999z999999";
+
+        NbpRatesRS nbpRatesRS = nbpRatesService.call(invalidPath);
+
+        assertThat(nbpRatesRS.getRates()).isNullOrEmpty();
+        assertThat(nbpRatesRS.getResult()).isEqualTo(FAILURE);
     }
 }

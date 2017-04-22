@@ -15,14 +15,21 @@ import java.util.function.Function;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.joining;
+import static model.Result.FAILURE;
+import static model.Result.SUCCESS;
 
 public class NbpRatesService {
 
     public NbpRatesRS call(String path) {
-        return createUrl(path)
-                .map(this::readXml)
-                .map(deserializeTo(NbpRatesRS.class))
-                .orElse(new NbpRatesRS());
+        try {
+            return createUrl(path)
+                    .map(this::readXml)
+                    .map(deserializeTo(NbpRatesRS.class))
+                    .map(response -> response.setResult(SUCCESS))
+                    .orElse(new NbpRatesRS().setResult(FAILURE));
+        } catch (Exception e) {
+            return new NbpRatesRS().setResult(FAILURE);
+        }
     }
 
     private <T> Function<String, T> deserializeTo(Class<T> valueType) {
