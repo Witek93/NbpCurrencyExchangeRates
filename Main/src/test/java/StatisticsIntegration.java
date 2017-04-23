@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
+import static model.StatisticsResult.RATES_SERVICE_INVALID_CURRENCY;
 import static model.StatisticsResult.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,5 +41,14 @@ public class StatisticsIntegration {
         assertThat(statisticsRS.getStandardDeviation())
                 .overridingErrorMessage("Expected Standard deviation not equal to 0, but was: " + statisticsRS.getStandardDeviation())
                 .isNotEqualByComparingTo(ZERO);
+    }
+    @Test
+    public void callFailure_forInvalidCurrency() throws Exception {
+        StatisticsService service = new StatisticsService();
+
+        StatisticsRS statisticsRS = service.call("XXX", "2007-04-13", "2007-04-13");
+
+        assertThat(statisticsRS).isNotNull();
+        assertThat(statisticsRS.getResult()).isEqualTo(RATES_SERVICE_INVALID_CURRENCY);
     }
 }

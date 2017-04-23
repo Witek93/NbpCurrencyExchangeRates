@@ -4,7 +4,9 @@ import model.DateRange;
 import model.ExchangeRate;
 import model.RatesRQ;
 import model.RatesRS;
+import model.RatesResult;
 import model.StatisticsRS;
+import model.StatisticsResult;
 import parser.InputData;
 import parser.InputDataParser;
 
@@ -21,15 +23,29 @@ public class StatisticsService {
     private RatesService ratesService = new RatesService();
 
     public StatisticsRS call(String... args) {
+        StatisticsRS statisticsRS = new StatisticsRS()
+                .setResult(SUCCESS);
+
         RatesRS ratesRS = callRatesService(args);
 
-        BigDecimal average = calculateAverage(ratesRS);
-        BigDecimal standardDeviation = calculateStandardDeviation(ratesRS);
+        if (ratesRS.getResult() == RatesResult.SUCCESS) {
+            statisticsRS
+                    .setAverage(calculateAverage(ratesRS))
+                    .setStandardDeviation(calculateStandardDeviation(ratesRS));
+        } else {
+            statisticsRS.setResult(mapRatesResult(ratesRS.getResult()));
+        }
 
-        return new StatisticsRS()
-                .setAverage(average)
-                .setStandardDeviation(standardDeviation)
-                .setResult(SUCCESS);
+        return statisticsRS;
+    }
+
+    private StatisticsResult mapRatesResult(RatesResult result) {
+        switch (result) {
+            case RATES_NOT_FOUND_FOR_GIVEN_CURRENCY:
+                return StatisticsResult.RATES_SERVICE_INVALID_CURRENCY;
+            default:
+                return StatisticsResult.RATES_SERVICE_FAILED;
+        }
     }
 
     private BigDecimal calculateStandardDeviation(RatesRS ratesRS) {
