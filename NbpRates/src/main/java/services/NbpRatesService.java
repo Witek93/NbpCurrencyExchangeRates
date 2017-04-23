@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.joining;
-import static model.Result.FAILURE;
-import static model.Result.SUCCESS;
+import static model.NbpRatesResult.FAILURE;
+import static model.NbpRatesResult.SUCCESS;
 
 public class NbpRatesService {
 

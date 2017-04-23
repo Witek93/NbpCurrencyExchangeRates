@@ -2,7 +2,7 @@ package model;
 
 public class RatesRS {
     private Exchange exchange;
-    private Result result;
+    private RatesResult result;
 
     public Exchange getExchange() {
         return exchange;
@@ -13,11 +13,11 @@ public class RatesRS {
         return this;
     }
 
-    public Result getResult() {
+    public RatesResult getResult() {
         return result;
     }
 
-    public RatesRS setResult(Result result) {
+    public RatesRS setResult(RatesResult result) {
         this.result = result;
         return this;
     }

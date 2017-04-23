@@ -32,12 +32,12 @@ public class NbpRatesRS {
     @JacksonXmlProperty(localName = "pozycja")
     private Collection<NbpRate> rates;
 
-    public NbpRatesRS setResult(Result result) {
+    public NbpRatesRS setResult(NbpRatesResult result) {
         this.result = result;
         return this;
     }
 
-    private Result result;
+    private NbpRatesResult result;
 
     public String getType() {
         return type;
@@ -59,7 +59,7 @@ public class NbpRatesRS {
         return rates;
     }
 
-    public Result getResult() {
+    public NbpRatesResult getResult() {
         return result;
     }
 }

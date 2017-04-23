@@ -2,8 +2,8 @@ import model.NbpRatesRS;
 import org.junit.Test;
 import services.NbpRatesService;
 
-import static model.Result.FAILURE;
-import static model.Result.SUCCESS;
+import static model.RatesResult.FAILURE;
+import static model.RatesResult.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NbpRatesAvailability {
