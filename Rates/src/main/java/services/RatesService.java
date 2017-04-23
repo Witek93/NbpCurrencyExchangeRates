@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static model.RatesResult.FAILURE;
-import static model.RatesResult.RATES_NOT_FOUND_FOR_GIVEN_CURRENCY;
+import static model.RatesResult.RATES_NOT_FOUND;
 import static model.RatesResult.SUCCESS;
 
 public class RatesService {
@@ -45,7 +45,7 @@ public class RatesService {
                     .collect(toList());
 
             if (exchangeRates.isEmpty()) {
-                result = RATES_NOT_FOUND_FOR_GIVEN_CURRENCY;
+                result = RATES_NOT_FOUND;
             }
 
             response.setExchange(new Exchange()

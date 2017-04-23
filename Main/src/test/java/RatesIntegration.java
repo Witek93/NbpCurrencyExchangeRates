@@ -3,7 +3,7 @@ import org.junit.Test;
 import services.RatesService;
 
 import static java.time.LocalDate.now;
-import static model.RatesResult.RATES_NOT_FOUND_FOR_GIVEN_CURRENCY;
+import static model.RatesResult.RATES_NOT_FOUND;
 import static model.RatesResult.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,7 +35,7 @@ public class RatesIntegration {
         RatesRS ratesRS = ratesService.call(ratesRQ);
 
         assertThat(ratesRS).isNotNull();
-        assertThat(ratesRS.getResult()).isEqualTo(RATES_NOT_FOUND_FOR_GIVEN_CURRENCY);
+        assertThat(ratesRS.getResult()).isEqualTo(RATES_NOT_FOUND);
         assertThat(ratesRS.getExchange().getExchangeRates()).isNullOrEmpty();
     }
 }

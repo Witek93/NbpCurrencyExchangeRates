@@ -6,7 +6,6 @@ import model.RatesRQ;
 import model.RatesRS;
 import model.RatesResult;
 import model.StatisticsRS;
-import model.StatisticsResult;
 import parser.InputData;
 import parser.InputDataParser;
 
@@ -17,35 +16,37 @@ import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
 import static java.math.RoundingMode.HALF_DOWN;
 import static java.util.stream.Collectors.toList;
-import static model.StatisticsResult.SUCCESS;
+import static model.StatisticResults.failure;
+import static model.StatisticResults.ratesServiceFailure;
+import static model.StatisticResults.success;
 
 public class StatisticsService {
     private RatesService ratesService = new RatesService();
 
     public StatisticsRS call(String... args) {
-        StatisticsRS statisticsRS = new StatisticsRS()
-                .setResult(SUCCESS);
+        StatisticsRS statisticsRS;
+        try {
+            InputData inputData = new InputDataParser(args).parse();
+            RatesRS ratesRS = callRatesService(inputData);
 
-        RatesRS ratesRS = callRatesService(args);
-
-        if (ratesRS.getResult() == RatesResult.SUCCESS) {
-            statisticsRS
-                    .setAverage(calculateAverage(ratesRS))
-                    .setStandardDeviation(calculateStandardDeviation(ratesRS));
-        } else {
-            statisticsRS.setResult(mapRatesResult(ratesRS.getResult()));
+            statisticsRS = calculateStatistics(ratesRS);
+        } catch (Exception e) {
+            statisticsRS = new StatisticsRS().setResult(failure(e));
         }
 
         return statisticsRS;
     }
 
-    private StatisticsResult mapRatesResult(RatesResult result) {
-        switch (result) {
-            case RATES_NOT_FOUND_FOR_GIVEN_CURRENCY:
-                return StatisticsResult.RATES_SERVICE_INVALID_CURRENCY;
-            default:
-                return StatisticsResult.RATES_SERVICE_FAILED;
+    private StatisticsRS calculateStatistics(RatesRS ratesRS) {
+        StatisticsRS statisticsRS = new StatisticsRS().setResult(success());
+        if (ratesRS.getResult() == RatesResult.SUCCESS) {
+            statisticsRS
+                    .setAverage(calculateAverage(ratesRS))
+                    .setStandardDeviation(calculateStandardDeviation(ratesRS));
+        } else {
+            statisticsRS.setResult(ratesServiceFailure(ratesRS.getResult()));
         }
+        return statisticsRS;
     }
 
     private BigDecimal calculateStandardDeviation(RatesRS ratesRS) {
@@ -81,10 +82,7 @@ public class StatisticsService {
         return sumOfExchangeRates.divide(valueOf(buyingRates.size()), HALF_DOWN);
     }
 
-    private RatesRS callRatesService(String[] args) {
-        InputDataParser parser = new InputDataParser(args);
-        InputData inputData = parser.parse();
-
+    private RatesRS callRatesService(InputData inputData) {
         RatesRQ ratesRQ = new RatesRQ()
                 .setCurrency(inputData.getCurrency())
                 .setDateRange(new DateRange(inputData.getStartDate(), inputData.getEndDate()));

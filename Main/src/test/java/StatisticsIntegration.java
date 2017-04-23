@@ -6,8 +6,9 @@ import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
-import static model.StatisticsResult.RATES_SERVICE_INVALID_CURRENCY;
-import static model.StatisticsResult.SUCCESS;
+import static model.RatesResult.RATES_NOT_FOUND;
+import static model.StatisticResults.ratesServiceFailure;
+import static model.StatisticResults.success;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StatisticsIntegration {
@@ -19,7 +20,7 @@ public class StatisticsIntegration {
         StatisticsRS statisticsRS = service.call("EUR", "2007-04-13", "2007-04-13");
 
         assertThat(statisticsRS).isNotNull();
-        assertThat(statisticsRS.getResult()).isEqualTo(SUCCESS);
+        assertThat(statisticsRS.getResult()).isEqualTo(success());
         assertThat(statisticsRS.getAverage())
                 .overridingErrorMessage("Expected average: " + expectedAverage + ", but was: " +statisticsRS.getAverage())
                 .isEqualByComparingTo(expectedAverage);
@@ -35,7 +36,7 @@ public class StatisticsIntegration {
         StatisticsRS statisticsRS = service.call("EUR", "2007-04-13", "2007-05-13");
 
         assertThat(statisticsRS).isNotNull();
-        assertThat(statisticsRS.getResult()).isEqualTo(SUCCESS);
+        assertThat(statisticsRS.getResult()).isEqualTo(success());
         assertThat(statisticsRS.getAverage())
                 .isNotEqualByComparingTo(ZERO);
         assertThat(statisticsRS.getStandardDeviation())
@@ -49,6 +50,6 @@ public class StatisticsIntegration {
         StatisticsRS statisticsRS = service.call("XXX", "2007-04-13", "2007-04-13");
 
         assertThat(statisticsRS).isNotNull();
-        assertThat(statisticsRS.getResult()).isEqualTo(RATES_SERVICE_INVALID_CURRENCY);
+        assertThat(statisticsRS.getResult()).isEqualTo(ratesServiceFailure(RATES_NOT_FOUND));
     }
 }
