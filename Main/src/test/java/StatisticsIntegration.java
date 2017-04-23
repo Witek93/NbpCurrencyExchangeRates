@@ -26,4 +26,19 @@ public class StatisticsIntegration {
                 .overridingErrorMessage("Expected Standard deviation: 0, but was: " + statisticsRS.getStandardDeviation())
                 .isEqualByComparingTo(ZERO);
     }
+
+    @Test
+    public void successfulCall_forDateRange() throws Exception {
+        StatisticsService service = new StatisticsService();
+
+        StatisticsRS statisticsRS = service.call("EUR", "2007-04-13", "2007-05-13");
+
+        assertThat(statisticsRS).isNotNull();
+        assertThat(statisticsRS.getResult()).isEqualTo(SUCCESS);
+        assertThat(statisticsRS.getAverage())
+                .isNotEqualByComparingTo(ZERO);
+        assertThat(statisticsRS.getStandardDeviation())
+                .overridingErrorMessage("Expected Standard deviation not equal to 0, but was: " + statisticsRS.getStandardDeviation())
+                .isNotEqualByComparingTo(ZERO);
+    }
 }
