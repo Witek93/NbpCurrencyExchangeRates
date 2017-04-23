@@ -18,6 +18,7 @@ import java.time.Year;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static model.RatesResult.FAILURE;
@@ -35,52 +36,51 @@ public class RatesService {
         RatesResult result = SUCCESS;
 
         if (ratesRQ.getCurrency() == null) {
-            return response.setResult(FAILURE);
+            result = FAILURE;
+        } else {
+            List<Directory> validDirectories = getValidDirectories(ratesRQ);
+
+            List<ExchangeRate> exchangeRates = validDirectories.stream()
+                    .flatMap(getExchangeRatesFor(ratesRQ.getCurrency()))
+                    .collect(toList());
+
+            if (exchangeRates.isEmpty()) {
+                result = RATES_NOT_FOUND_FOR_GIVEN_CURRENCY;
+            }
+
+            response.setExchange(new Exchange()
+                    .setCurrency(ratesRQ.getCurrency())
+                    .setExchangeRates(exchangeRates));
         }
-
-        Collection<Year> years = ratesRQ.getDateRange().getYears();
-        GetDirectoriesRS getDirectoriesRS = getDirectoriesService.call(years);
-
-        DirectoriesDecorator decoratedDirectories = new DirectoriesDecorator(getDirectoriesRS);
-
-        List<Directory> validDirectories = ratesRQ.getDateRange().getDays()
-                .stream()
-                .flatMap(decoratedDirectories::findForDate)
-                .collect(toList());
-
-        Currency requestedCurrency = ratesRQ.getCurrency();
-
-        List<ExchangeRate> exchangeRates = validDirectories.stream()
-                .map(directory -> nbpRatesService.call(directory.getFileName()))
-                .map(retrieveAndMapToExchangeRatesFor(requestedCurrency))
-                .flatMap(Collection::stream)
-                .collect(toList());
-
-        if (exchangeRates.isEmpty()) {
-            result = RATES_NOT_FOUND_FOR_GIVEN_CURRENCY;
-        }
-
-        Exchange exchange = new Exchange();
-
-        exchange.setCurrency(requestedCurrency)
-                .addExchangeRate(exchangeRates);
 
         return response
-                .setExchange(exchange)
                 .setResult(result);
     }
 
-    private Function<NbpRatesRS, List<ExchangeRate>> retrieveAndMapToExchangeRatesFor(Currency requestedCurrency) {
-        return nbpRatesRS -> {
+    private Function<Directory, Stream<ExchangeRate>> getExchangeRatesFor(Currency requestedCurrency) {
+        return directory -> {
+            NbpRatesRS nbpRatesRS = nbpRatesService.call(directory.getFileName());
+
             String requestedCurrencyCode = requestedCurrency.getCode();
             LocalDate publicationDate = nbpRatesRS.getPublicationDate();
 
             return nbpRatesRS.getRates()
                     .stream()
                     .filter(nbpRate -> requestedCurrencyCode.equalsIgnoreCase(nbpRate.getCurrencyCode()))
-                    .map(mapToExchangeRateWithDate(publicationDate))
-                    .collect(toList());
+                    .map(mapToExchangeRateWithDate(publicationDate));
         };
+    }
+
+    private List<Directory> getValidDirectories(RatesRQ ratesRQ) {
+        Collection<Year> years = ratesRQ.getDateRange().getYears();
+        GetDirectoriesRS getDirectoriesRS = getDirectoriesService.call(years);
+
+        DirectoriesDecorator decoratedDirectories = new DirectoriesDecorator(getDirectoriesRS);
+
+        return ratesRQ.getDateRange().getDays()
+                .stream()
+                .flatMap(decoratedDirectories::findForDate)
+                .collect(toList());
     }
 
     private Function<NbpRate, ExchangeRate> mapToExchangeRateWithDate(LocalDate publicationDate) {

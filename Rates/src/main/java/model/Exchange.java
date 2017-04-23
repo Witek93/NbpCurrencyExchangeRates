@@ -17,18 +17,14 @@ public class Exchange {
     }
 
     public Collection<ExchangeRate> getExchangeRates() {
-        if (exchangeRates == null)
-        {
+        if (exchangeRates == null) {
             exchangeRates = new ArrayList<>();
         }
         return exchangeRates;
     }
 
-    public void addExchangeRate(ExchangeRate exchangeRate) {
-        getExchangeRates().add(exchangeRate);
-    }
-
-    public void addExchangeRate(Collection<ExchangeRate> exchangeRates) {
+    public Exchange setExchangeRates(Collection<ExchangeRate> exchangeRates) {
         getExchangeRates().addAll(exchangeRates);
+        return this;
     }
 }
