@@ -12,8 +12,7 @@ import java.util.Locale;
 
 public class NbpDoubleDeserializer extends JsonDeserializer<Double> {
 
-    private static final String DIGITS = "\\d";
-    private static final String DECIMAL_SEPARATOR = ",";
+    private static final String VALID_DECIMAL_NUMBER_REGEX = "\\d+(,\\d+)?";
 
     @Override
     public Double deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
@@ -33,11 +32,8 @@ public class NbpDoubleDeserializer extends JsonDeserializer<Double> {
     }
 
     private void checkForInvalidCharacters(String textToDeserialize) {
-        String invalidCharacters = textToDeserialize
-                .replaceAll(DECIMAL_SEPARATOR, "")
-                .replaceAll(DIGITS, "");
-        if (!invalidCharacters.isEmpty()) {
-            throw new DeserializationException("Valid decimal number should not contain characters: " + invalidCharacters);
+        if (!textToDeserialize.matches(VALID_DECIMAL_NUMBER_REGEX)) {
+            throw new DeserializationException("Valid decimal number should contain only one comma and digits!");
         }
     }
 }
