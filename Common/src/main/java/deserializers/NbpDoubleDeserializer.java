@@ -17,12 +17,14 @@ public class NbpDoubleDeserializer extends JsonDeserializer<Double> {
 
     @Override
     public Double deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
         String textToDeserialize = jsonParser.getText();
-
         checkForInvalidCharacters(textToDeserialize);
+        return parseDoubleFromString(textToDeserialize);
+    }
 
+    private Double parseDoubleFromString(String textToDeserialize) {
         try {
+            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
             Number number = format.parse(textToDeserialize);
             return number.doubleValue();
         } catch (ParseException e) {
